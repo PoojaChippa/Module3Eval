@@ -5,18 +5,18 @@ import { useAuth } from "../context/AuthContext";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { Login } = useAuth();
+  const auth = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (email === "admin@gmail.com	" && password === "admin1234") {
-      Login({ role: "admin" });
-      navigate("admin/dashboard");
+    if (email === "admin@gmail.com" && password === "admin1234") {
+      auth.login({ role: "admin" });
+      navigate("/admin/dashboard");
     } else if (email === "customer@gmail.com" && password === "customer1234") {
-      Login({ role: "customer" });
+      auth.login({ role: "customer" });
       navigate("/customers/dashboard");
     } else {
-      alert("Invvalid credentials");
+      alert("Invalid credentials");
     }
   };
 

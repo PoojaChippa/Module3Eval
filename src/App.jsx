@@ -1,14 +1,50 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import TodoList from "./pages/TodoList";
-import TodoDetails from "./pages/TodoDetails";
+import { AuthProvider } from "./context/AuthContext";
+import { RestaurantProvider } from "./context/RestaurantContext";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
-function App() {
+import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
+import CustomerDashboard from "./pages/CustomerDashboard";
+import UpdateRestaurant from "./pages/UpdateRestaurant";
+
+export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<TodoList />} />
-      <Route path="/todo/:id" element={<TodoDetails />} />
-    </Routes>
+    <AuthProvider>
+      <RestaurantProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+
+            <Route
+              path="/admin/dashboard"
+              element={
+                <ProtectedRoute role="admin">
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin/restaurants/update"
+              element={
+                <ProtectedRoute role="admin">
+                  <UpdateRestaurant />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/customers/dashboard"
+              element={
+                <ProtectedRoute role="customer">
+                  <CustomerDashboard />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </RestaurantProvider>
+    </AuthProvider>
   );
 }
-
-export default App;
